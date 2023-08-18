@@ -62,6 +62,33 @@ func main() {
 
 	//Concurrent FanOut Version:
 	PBC2 := NewPubSubConCur2()
+	wg.Add(2)
 	subFan1 := PBC2.Subscribe("tech")
 	subFan2ChanCopy := subFan1
+	
+	go func(ctx context.Context){
+		for {
+			select{
+				case v1 := <- subFan1:
+					fmt.Println("subFan1 concurrent message:",v1)
+				case <-ctx.Done():
+					wg.Done()
+					return
+				}
+		}
+		
+	}(ctx1)
+	
+	go func(ctx context.Context){
+		for {
+			select{
+				case v2 := <- subFan2ChanCopy:
+					fmt.Println("subFan2 concurrent message:",v2)
+				case <-ctx.Done():
+					wg.Done()
+					return
+			}
+		}
+	}(ctx2)
+	
 }
