@@ -21,6 +21,7 @@ func(pb *PubSubConCur) Subscribe(topic string) <-chan string{
 	pb.Subscribers[topic] = append(pb.Subscribers[topic], ch)
 	pb.mutex.Unlock()
 	return ch
+	// Notice that we are returing a ch and not <-ch, go knows that we are just sending a channel reciever. 
 }
 
 // Here we have the Read lock and unlock. This is checking if are writing to the subscribers, if not a single coroutine can read from subscribers, otherwise it will be able to read. 
