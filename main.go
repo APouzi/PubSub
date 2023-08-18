@@ -57,6 +57,11 @@ func main() {
 	
 	PBC.Publish("tech", "vr is cool!")
 	PBC.Publish("cars", "cars are cool!")
-	wg.Wait()
 	
+
+
+	//Concurrent FanOut Version:
+	PBC2 := NewPubSubConCur2()
+	subFan1 := PBC2.Subscribe("tech")
+	subFan2ChanCopy := subFan1
 }
