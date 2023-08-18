@@ -21,3 +21,9 @@ func(pb *PubSubConCur2) Subscribe(topic string) <-chan string{
 	pb.Mutex.Unlock()
 	return ch
 }
+
+func (pb *PubSubConCur2) Publish(topic, msg string) {
+	pb.Mutex.RLock()
+	pb.Subscribers[topic] <- msg
+	pb.Mutex.RUnlock()
+}
