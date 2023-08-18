@@ -71,6 +71,8 @@ func main() {
 			select{
 				case v1 := <- subFan1:
 					fmt.Println("subFan1 concurrent message:",v1)
+				// case v2 := <- subFan2ChanCopy:
+				// 	fmt.Println("subFan1 concurrent message:",v2)
 				case <-ctx.Done():
 					wg.Done()
 					return
@@ -79,6 +81,7 @@ func main() {
 		
 	}(ctx1)
 	
+	// You can comment out this code below and uncomment the casev2!
 	go func(ctx context.Context){
 		for {
 			select{
@@ -91,4 +94,7 @@ func main() {
 		}
 	}(ctx2)
 	
+	PBC2.Publish("tech", "vr is cool!")
+	PBC2.Publish("tech", "vr is cool!")
+	wg.Wait()
 }
