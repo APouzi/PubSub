@@ -13,4 +13,11 @@ func NewPubSubConCur2() *PubSubConCur2 {
 		Subscribers: make(map[string]chan string),
 	}
 }
+
+func(pb *PubSubConCur2) Subscribe(topic string) <-chan string{
+	pb.Mutex.Lock()
+	ch := make(chan string)
+	pb.Subscribers[topic] = ch
+	pb.Mutex.Unlock()
+	return ch
 }
